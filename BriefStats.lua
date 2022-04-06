@@ -5,13 +5,6 @@ Addon.version = GetAddOnMetadata(Addon.name, "Version")
 
 _G[Addon.name] = Addon
 
-local MSG_PREFIX = "|cff00ff00■ |cffffaa00"..Addon.name.."|r "
-local MSG_SUFFIX = " |cff00ff00■|r"
-local p = function(str) print(MSG_PREFIX..str..MSG_SUFFIX) end
-local colorPos = "|cff20ff20";
-local colorNeg = "|cffff2020";
-local optionsTable
-
 local dbDefault = {
 	profile = {
 		anchorFrame = "PlayerStatFrameLeftDropDown",
@@ -29,40 +22,40 @@ local c = {
 	["감소"] = "reduction",
 	reduction = function()
 		local _, effectiveArmor = UnitArmor("player")
-		return format("%.2f%%", PaperDollFrame_GetArmorReduction(effectiveArmor, UnitLevel("player")))
+		return format("%.2f", PaperDollFrame_GetArmorReduction(effectiveArmor, UnitLevel("player")))
 	end,
 	["보스감소"] = "bossreduction",
 	bossreduction = function()
 		local _, effectiveArmor = UnitArmor("player")
-		return format("%.2f%%", PaperDollFrame_GetArmorReduction(effectiveArmor, 73))
+		return format("%.2f", PaperDollFrame_GetArmorReduction(effectiveArmor, 73))
 	end,
-	["공격력"] = "damage",
+	["공격력증가"] = "damage",
 	damage = function()
 		local _,_,_,_,_,_,percent = UnitDamage("player")
-		return floor(percent*100+0.5).."%"
+		return floor(percent*100+0.5)
 	end,
 	["피치명"] = "critavoid",
-	critavoid = function() return format("%.2f%%", GetDodgeBlockParryChanceFromDefense() + GetCombatRatingBonus(CR_RESILIENCE_CRIT_TAKEN)) end,
+	critavoid = function() return format("%.2f", GetDodgeBlockParryChanceFromDefense() + GetCombatRatingBonus(CR_RESILIENCE_CRIT_TAKEN)) end,
 	["완방"] = "avoidance",
-	avoidance = function() return format("%.2f%%", 5 + GetDodgeBlockParryChanceFromDefense() + GetDodgeChance() + GetParryChance()) end,
+	avoidance = function() return format("%.2f", 5 + GetDodgeBlockParryChanceFromDefense() + GetDodgeChance() + GetParryChance()) end,
 	["방어합"] = "totalavoid",
-	totalavoid = function() return format("%.2f%%", 5 + GetDodgeBlockParryChanceFromDefense() + GetDodgeChance() + GetParryChance() + GetBlockChance()) end,
+	totalavoid = function() return format("%.2f", 5 + GetDodgeBlockParryChanceFromDefense() + GetDodgeChance() + GetParryChance() + GetBlockChance()) end,
 	["방피"] = "blockvalue",
 	blockvalue = function() return GetShieldBlock() end,
 	["근접적중"] = "mhit",
-	mhit = function() return format("%.2f%%", GetCombatRatingBonus(CR_HIT_MELEE)) end,
+	mhit = function() return format("%.2f", GetCombatRatingBonus(CR_HIT_MELEE)) end,
 	["근접치명"] = "mcrit",
-	mcrit = function() return format("%.2f%%", GetCritChance()) end,
+	mcrit = function() return format("%.2f", GetCritChance()) end,
 	["근접가속"] = "mhaste",
-	mhaste = function() return format("%.2f%%", GetCombatRatingBonus(CR_HASTE_MELEE)) end,
+	mhaste = function() return format("%.2f", GetCombatRatingBonus(CR_HASTE_MELEE)) end,
 	["방무"] = "apen",
 	apen = function() return GetArmorPenetration() end,
 	["원거리적중"] = "rhit",
-	rhit = function() return format("%.2f%%", GetCombatRatingBonus(CR_HIT_RANGED)) end,
+	rhit = function() return format("%.2f", GetCombatRatingBonus(CR_HIT_RANGED)) end,
 	["원거리치명"] = "rcrit",
-	rcrit = function() return format("%.2f%%", GetRangedCritChance()) end,
+	rcrit = function() return format("%.2f", GetRangedCritChance()) end,
 	["원거리가속"] = "rhaste",
-	rhaste = function() return format("%.2f%%", GetCombatRatingBonus(CR_HASTE_RANGED)) end,
+	rhaste = function() return format("%.2f", GetCombatRatingBonus(CR_HASTE_RANGED)) end,
 	["신성"] = "sholy",
 	sholy = function() return "|cffffe57f"..GetSpellBonusDamage(2).."|r" end,
 	["화염"] = "sfire",
@@ -76,23 +69,23 @@ local c = {
 	["비전"] = "sarcane",
 	sarcane = function() return "|cffff7fff"..GetSpellBonusDamage(7).."|r" end,
 	["신성극대"] = "choly",
-	choly = function() return format("|cffffe57f%.2f%%|r", GetSpellCritChance(2)) end,
+	choly = function() return format("|cffffe57f%.2f|r", GetSpellCritChance(2)) end,
 	["화염극대"] = "cfire",
-	cfire = function() return format("|cffff7f00%.2f%%|r", GetSpellCritChance(3)) end,
+	cfire = function() return format("|cffff7f00%.2f|r", GetSpellCritChance(3)) end,
 	["자연극대"] = "cnature",
-	cnature = function() return format("|cff4cff4c%.2f%%|r", GetSpellCritChance(4)) end,
+	cnature = function() return format("|cff4cff4c%.2f|r", GetSpellCritChance(4)) end,
 	["냉기극대"] = "cfrost",
-	cfrost = function() return format("|cff7fffff%.2f%%|r", GetSpellCritChance(5)) end,
+	cfrost = function() return format("|cff7fffff%.2f|r", GetSpellCritChance(5)) end,
 	["암흑극대"] = "cshadow",
-	cshadow = function() return format("|cff7f7fff%.2f%%|r", GetSpellCritChance(6)) end,
+	cshadow = function() return format("|cff7f7fff%.2f|r", GetSpellCritChance(6)) end,
 	["비전극대"] = "carcane",
-	carcane = function() return format("|cffff7fff%.2f%%|r", GetSpellCritChance(7)) end,
+	carcane = function() return format("|cffff7fff%.2f|r", GetSpellCritChance(7)) end,
 	["치증"] = "heal",
 	heal = function() return GetSpellBonusHealing() end,
 	["주문적중"] = "shit",
-	shit = function() return format("%.2f%%", GetCombatRatingBonus(CR_HIT_SPELL)) end,
+	shit = function() return format("%.2f", GetCombatRatingBonus(CR_HIT_SPELL)) end,
 	["주문가속"] = "shaste",
-	shaste = function() return format("%.2f%%", GetCombatRatingBonus(CR_HASTE_SPELL)) end,
+	shaste = function() return format("%.2f", GetCombatRatingBonus(CR_HASTE_SPELL)) end,
 	["주문관통"] = "spen",
 	spen = function() return GetSpellPenetration() end,
 	["이속"] = "speed",
@@ -116,7 +109,6 @@ local _mt = {
 		end
 	end
 }
-
 setmetatable(c, _mt)
 
 function Addon:OnInitialize()
@@ -153,21 +145,21 @@ function Addon:InitDB()
 	if db.default then
 		db.default = false
 		if engClass == "WARRIOR" then
-			db.string = "방무 [방무]\n공격 [공격력]\n적중 [근접적중]\n가속 [근접가속]\n\n탄력 [피치명]\n이속 [이속]"
+			db.string = "방무 [방무]\n공격 [공격력증가]%\n적중 [근접적중]%\n가속 [근접가속]%\n\n탄력 [피치명]%\n이속 [이속]%"
 		elseif engClass == "ROGUE" then
-			db.string = "방무 [방무]\n공격 [공격력]\n적중 [근접적중]\n가속 [근접가속]\n\n탄력 [피치명]\n이속 [이속]"
+			db.string = "방무 [방무]\n공격 [공격력증가]%\n적중 [근접적중]%\n가속 [근접가속]%\n\n탄력 [피치명]%\n이속 [이속]%"
 		elseif engClass == "MAGE" then
-			db.string = "공격 [공격력]\n비전 [비전] [비전극대]\n냉기 [냉기] [냉기극대]\n\n적중 [주문적중]\n가속 [주문가속]\n관통 [주문관통]\n탄력 [피치명]"
+			db.string = "공격 [공격력증가]%\n비전 [비전] [비전극대]%\n냉기 [냉기] [냉기극대]%\n\n적중 [주문적중]%\n가속 [주문가속]%\n관통 [주문관통]\n탄력 [피치명]%"
 		elseif engClass == "PRIEST" then
-			db.string = "공격 [공격력]\n암흑 [암흑] [암흑극대]\n치유 [치유]\n\n적중 [주문적중]\n가속 [주문가속]\n관통 [주문관통]\n탄력 [피치명]"
+			db.string = "공격 [공격력증가]%\n암흑 [암흑] [암흑극대]%\n치유 [치유]\n\n적중 [주문적중]%\n가속 [주문가속]%\n관통 [주문관통]\n탄력 [피치명]"
 		elseif engClass == "DRUID" then
-			db.string = "방무 [방무]\n공격 [공격력]\n자연 [자연] [자연극대]\n적중 [근접적중] [주문적중]\n가속 [근접가속] [주문가속]\n\n탄력 [피치명]\n이속 [이속]"
+			db.string = "방무 [방무]\n공격 [공격력증가]%\n자연 [자연] [자연극대]%\n적중 [근접적중]% [주문적중]%\n가속 [근접가속]% [주문가속]%\n\n탄력 [피치명]%\n이속 [이속]%"
 		elseif engClass == "SHAMAN" then
-			db.string = "방무 [방무]\n공격 [공격력]\n자연 [자연] [자연극대]\n적중 [근접적중] [주문적중]\n가속 [근접가속] [주문가속]\n\n탄력 [피치명]\n이속 [이속]"
+			db.string = "방무 [방무]\n공격 [공격력증가]%\n자연 [자연] [자연극대]%\n적중 [근접적중]% [주문적중]%\n가속 [근접가속]% [주문가속]%\n\n탄력 [피치명]%\n이속 [이속]%"
 		elseif engClass == "HUNTER" then
-			db.string = "방무 [방무]\n공격 [공격력]\n적중 [원거리적중]\n가속 [원거리가속]\n\n탄력 [피치명]\n이속 [이속]"
+			db.string = "방무 [방무]\n공격 [공격력증가]%\n적중 [원거리적중]%\n가속 [원거리가속]%\n\n탄력 [피치명]%\n이속 [이속]%"
 		elseif engClass == "PALADIN" then
-			db.string = "공격 [공격력]\n신성 [신성] [신성극대]\n적중 [근접적중] [주문적중]\n가속 [근접가속] [주문가속]\n\n완방 [완방]\n방어합 [방어합]\n탄력 [피치명]\n이속 [이속]"
+			db.string = "공격 [공격력증가]%\n신성 [신성] [신성극대]%\n적중 [근접적중]% [주문적중]%\n\n완방 [완방]%\n방어합 [방어합]%\n탄력 [피치명]%\n이속 [이속]%"
 		end
 	end
 end
@@ -251,28 +243,27 @@ self.optionsTable = {
 					name = "String",
 					type = "input",
 					multiline = 8,
+					width = "double",
 					order = 101,
 				},
 				usage = {
 					name = [[사용 키워드
 [감소]    방어도 데미지 감소 % (동레벨)
 [보스감소]    방어도 데미지 감소 % (해골몹)
+[공격력증가]    공격력 %
 [피치명]    피치명 %
-[방무]    방어도무시
-[주문관통]    주문 관통
-[완방]    완방 %(빗나감+무막+회피)
 [방어합]    방어합 %(완방+방막)
+[완방]    완방 %(빗나감+무막+회피)
 [방피]    방피량
+[방무]    방어도무시
 [근접적중] [원거리적중] [주문적중]
 [근접가속] [원거리가속] [주문가속]
 [근접치명] [원거리치명]    각 % 수치
-|cffffe57f[신성]    [신성극대]|r
-|cffff7f00[화염]    [화염극대]|r
-|cff4cff4c[자연]    [자연극대]|r
-|cff7fffff[냉기]    [냉기극대]|r
-|cff7f7fff[암흑]    [암흑극대]|r
-|cffff7fff[비전]    [비전극대]|r
+|cffffe57f[신성]    [신성극대]%|r    |cffff7f00[화염]    [화염극대]%|r
+|cff4cff4c[자연]    [자연극대]%|r    |cff7fffff[냉기]    [냉기극대]%|r
+|cff7f7fff[암흑]    [암흑극대]%|r    |cffff7fff[비전]    [비전극대]%|r
 [치증]    치유량
+[주문관통]    주문 관통
 [이속]    이동 속도 %]],
 					type = "description",
 					order = 102,
