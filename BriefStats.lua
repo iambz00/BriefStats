@@ -125,12 +125,14 @@ function Addon:OnInitialize()
 	self.db.RegisterCallback(self, "OnProfileCopied", "RefreshUI")
 	self.db.RegisterCallback(self, "OnProfileReset", "RefreshUI")
 
-	self.oldPaperDollFrame_UpdateStats = PaperDollFrame_UpdateStats
-	PaperDollFrame_UpdateStats = bsPaperDollFrame_UpdateStats
+	hooksecurefunc(PaperDollFrame_UpdateStats, bsPaperDollFrame_UpdateStats)
+
+--	self.oldPaperDollFrame_UpdateStats = PaperDollFrame_UpdateStats
+--	PaperDollFrame_UpdateStats = bsPaperDollFrame_UpdateStats
 end
 
 function bsPaperDollFrame_UpdateStats()
-	if Addon.oldPaperDollFrame_UpdateStats then Addon.oldPaperDollFrame_UpdateStats() end
+--	if Addon.oldPaperDollFrame_UpdateStats then Addon.oldPaperDollFrame_UpdateStats() end
 	local parse = Addon.db.profile.string or ""
 	parse = parse:gsub("%[([^]^[]*)%]", function(s) return c(s) end)
 	Addon.text:SetText(parse)

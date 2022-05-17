@@ -1,6 +1,6 @@
 ## Interface: 20504
 ## Title: BriefStats
-## Version: 0.9
+## Version: 1.1
 
 ## Notes: 
 ## Notes-koKR: 
