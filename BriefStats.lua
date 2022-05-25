@@ -105,7 +105,7 @@ local _mt = {
 				return t(v)
 			end
 		else
-			return v
+			return k
 		end
 	end
 }
@@ -127,8 +127,6 @@ function Addon:OnInitialize()
 
 	hooksecurefunc(PaperDollFrame_UpdateStats, bsPaperDollFrame_UpdateStats)
 
---	self.oldPaperDollFrame_UpdateStats = PaperDollFrame_UpdateStats
---	PaperDollFrame_UpdateStats = bsPaperDollFrame_UpdateStats
 end
 
 function bsPaperDollFrame_UpdateStats()
@@ -214,6 +212,7 @@ end
 
 function Addon:RefreshUI()
 	local db = self.db.profile
+	self.ui:SetParent(_G[db.anchorFrame])
 	self.ui:ClearAllPoints()
 	self.ui:SetPoint(db.anchor, db.anchorFrame, db.anchorFrameAnchor, db.offsetX, db.offsetY)
 	self.btn:SetPoint(db.anchor, db.anchorFrame, db.anchorFrameAnchor, db.offsetX, db.offsetY)
