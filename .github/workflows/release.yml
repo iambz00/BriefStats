@@ -29,4 +29,4 @@ jobs:
       - name: Package and release for Burning Crusade Classic
         uses: BigWigsMods/packager@v2
         with:
-          args: -g bcc
+          args: -g bcc -n "{package-name}-{project-version}"
