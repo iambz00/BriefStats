@@ -1,6 +1,6 @@
-## Interface: 20504
+## Interface: 30400
 ## Title: BriefStats
-## Version: 1.0.1
+## Version: 1.0.2
 ## X-Curse-Project-ID: 605574
 
 ## Notes: 

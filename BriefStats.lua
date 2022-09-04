@@ -27,7 +27,7 @@ local c = {
 	["보스감소"] = "bossreduction",
 	bossreduction = function()
 		local _, effectiveArmor = UnitArmor("player")
-		return format("%.2f", PaperDollFrame_GetArmorReduction(effectiveArmor, 73))
+		return format("%.2f", PaperDollFrame_GetArmorReduction(effectiveArmor, 83))
 	end,
 	["공격력증가"] = "damage",
 	damage = function()
@@ -49,7 +49,8 @@ local c = {
 	["근접가속"] = "mhaste",
 	mhaste = function() return format("%.2f", GetCombatRatingBonus(CR_HASTE_MELEE)) end,
 	["방무"] = "apen",
-	apen = function() return GetArmorPenetration() end,
+	["방관"] = "apen",
+	apen = function() return format("%.2f", GetArmorPenetration()) end,
 	["원거리적중"] = "rhit",
 	rhit = function() return format("%.2f", GetCombatRatingBonus(CR_HIT_RANGED)) end,
 	["원거리치명"] = "rcrit",
@@ -145,19 +146,19 @@ function Addon:InitDB()
 	if db.default then
 		db.default = false
 		if engClass == "WARRIOR" then
-			db.string = "방무 [방무]\n공격 [공격력증가]%\n적중 [근접적중]%\n가속 [근접가속]%\n\n탄력 [피치명]%\n이속 [이속]%"
+			db.string = "방관 [방관]%\n공격 [공격력증가]%\n적중 [근접적중]%\n가속 [근접가속]%\n\n탄력 [피치명]%\n이속 [이속]%"
 		elseif engClass == "ROGUE" then
-			db.string = "방무 [방무]\n공격 [공격력증가]%\n적중 [근접적중]%\n가속 [근접가속]%\n\n탄력 [피치명]%\n이속 [이속]%"
+			db.string = "방관 [방관]%\n공격 [공격력증가]%\n적중 [근접적중]%\n가속 [근접가속]%\n\n탄력 [피치명]%\n이속 [이속]%"
 		elseif engClass == "MAGE" then
 			db.string = "공격 [공격력증가]%\n비전 [비전] [비전극대]%\n냉기 [냉기] [냉기극대]%\n\n적중 [주문적중]%\n가속 [주문가속]%\n관통 [주문관통]\n탄력 [피치명]%"
 		elseif engClass == "PRIEST" then
 			db.string = "공격 [공격력증가]%\n암흑 [암흑] [암흑극대]%\n치유 [치유]\n\n적중 [주문적중]%\n가속 [주문가속]%\n관통 [주문관통]\n탄력 [피치명]"
 		elseif engClass == "DRUID" then
-			db.string = "방무 [방무]\n공격 [공격력증가]%\n자연 [자연] [자연극대]%\n적중 [근접적중]% [주문적중]%\n가속 [근접가속]% [주문가속]%\n\n탄력 [피치명]%\n이속 [이속]%"
+			db.string = "방관 [방관]%\n공격 [공격력증가]%\n자연 [자연] [자연극대]%\n적중 [근접적중]% [주문적중]%\n가속 [근접가속]% [주문가속]%\n\n탄력 [피치명]%\n이속 [이속]%"
 		elseif engClass == "SHAMAN" then
-			db.string = "방무 [방무]\n공격 [공격력증가]%\n자연 [자연] [자연극대]%\n적중 [근접적중]% [주문적중]%\n가속 [근접가속]% [주문가속]%\n\n탄력 [피치명]%\n이속 [이속]%"
+			db.string = "방관 [방관]%\n공격 [공격력증가]%\n자연 [자연] [자연극대]%\n적중 [근접적중]% [주문적중]%\n가속 [근접가속]% [주문가속]%\n\n탄력 [피치명]%\n이속 [이속]%"
 		elseif engClass == "HUNTER" then
-			db.string = "방무 [방무]\n공격 [공격력증가]%\n적중 [원거리적중]%\n가속 [원거리가속]%\n\n탄력 [피치명]%\n이속 [이속]%"
+			db.string = "방관 [방관]%\n공격 [공격력증가]%\n적중 [원거리적중]%\n가속 [원거리가속]%\n\n탄력 [피치명]%\n이속 [이속]%"
 		elseif engClass == "PALADIN" then
 			db.string = "공격 [공격력증가]%\n신성 [신성] [신성극대]%\n적중 [근접적중]% [주문적중]%\n\n완방 [완방]%\n방어합 [방어합]%\n탄력 [피치명]%\n이속 [이속]%"
 		end
@@ -256,7 +257,7 @@ self.optionsTable = {
 [방어합]    방어합 %(완방+방막)
 [완방]    완방 %(빗나감+무막+회피)
 [방피]    방피량
-[방무]    방어도무시
+[방관]    방어도관통
 [근접적중] [원거리적중] [주문적중]
 [근접가속] [원거리가속] [주문가속]
 [근접치명] [원거리치명]    각 % 수치
