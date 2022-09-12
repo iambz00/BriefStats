@@ -90,9 +90,9 @@ local c = {
 	["주문관통"] = "spen",
 	spen = function() return GetSpellPenetration() end,
 	["이속"] = "speed",
-	speed = function()
-		local _,speed = GetUnitSpeed("player")
-		return ceil(speed/7*100)
+	speed = function()	-- Returns best speed
+		local _, run, fly = GetUnitSpeed("player")
+		return (run > fly) and ceil(run/7*100) or ceil(fly/7*100)
 	end,
 }
 
@@ -161,6 +161,8 @@ function Addon:InitDB()
 			db.string = "방관 [방관]%\n공격 [공격력증가]%\n적중 [원거리적중]%\n가속 [원거리가속]%\n\n탄력 [피치명]%\n이속 [이속]%"
 		elseif engClass == "PALADIN" then
 			db.string = "공격 [공격력증가]%\n신성 [신성] [신성극대]%\n적중 [근접적중]% [주문적중]%\n\n완방 [완방]%\n방어합 [방어합]%\n탄력 [피치명]%\n이속 [이속]%"
+		elseif engClass == "DEATHKNIGHT" then
+			db.string = "방관 [방관]%\n공격 [공격력증가]%\n적중 [근접적중]% [주문적중]%\n가속 [근접가속]%\n\n완방 [완방]%\n탄력 [피치명]%\n이속 [이속]%"
 		end
 	end
 end
