@@ -1,9 +1,10 @@
-local addonName, _ = ...
+local addonName, shareTable = ...
 local Addon = LibStub("AceAddon-3.0"):NewAddon(addonName, "AceEvent-3.0")
 Addon.name = addonName
 Addon.version = GetAddOnMetadata(Addon.name, "Version")
-
 _G[Addon.name] = Addon
+
+local GS = shareTable.gs
 
 local dbDefault = {
 	profile = {
@@ -93,6 +94,19 @@ local c = {
 	speed = function()	-- Returns best speed
 		local _, run, fly = GetUnitSpeed("player")
 		return (run > fly) and ceil(run/7*100) or ceil(fly/7*100)
+	end,
+	["아이템레벨"] = "ilvl",
+	["템렙"] = "ilvl",
+	ilvl = function()
+		local _, ilvl = GS:GetScore()
+		return format("%.1f", ilvl)
+	end,
+	["기어스코어"] = "gearscore",
+	["기코"] = "gearscore",
+	gearscore = function()
+		local score, _ = GS:GetScore()
+		local r,g,b = GS:GetQuality(score)
+		return string.format("|cff%.2x%.2x%.2x%d|r", r*255, g*255, b*255, score)
 	end,
 }
 
@@ -252,6 +266,8 @@ self.optionsTable = {
 				},
 				usage = {
 					name = [[사용 키워드
+[기어스코어] [기코]
+[아이템레벨] [템렙]   평균 아이템레벨
 [감소]    방어도 데미지 감소 % (동레벨)
 [보스감소]    방어도 데미지 감소 % (해골몹)
 [공격력증가]    공격력 %
