@@ -1,19 +1,18 @@
 ## Interface: 30400
 ## Title: BriefStats
-## Version: 1.1.0
+## Version: 2.0.0
 ## X-Curse-Project-ID: 605574
 
-## Notes: 
-## Notes-koKR: 
+## Notes: Briefly show stats over Character window
+## Notes-koKR: 캐릭터창에 추가 스탯 간략 표시
 ## SavedVariables: BriefStatsDB
-## OptionalDeps: LibStub, CallbackHandler-1.0, Ace3, LibDetours-1.0, LibClassicInspector
+## OptionalDeps: Ace3, LibDetours-1.0, LibClassicInspector
 ## DefaultState: enabled
 
 #@no-lib-strip@
 Libs\LibStub\LibStub.lua
 Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
 Libs\AceAddon-3.0\AceAddon-3.0.xml
-Libs\AceGUI-3.0\AceGUI-3.0.xml
 Libs\AceConfig-3.0\AceConfig-3.0.xml
 Libs\AceDB-3.0\AceDB-3.0.xml
 Libs\AceDBOptions-3.0\AceDBOptions-3.0.xml
@@ -21,6 +20,9 @@ Libs\AceEvent-3.0\AceEvent-3.0.xml
 Libs\LibDetours-1.0\LibDetours-1.0.lua
 Libs\LibClassicInspector\LibClassicInspector.lua
 #@end-no-lib-strip@
+
+Localization\localization-enUS.lua
+Localization\localization-koKR.lua
 
 GearScore.lua
 BriefStats.lua
