@@ -272,6 +272,12 @@ self.optionsTable = {
                     type = "input",
                     order = 201,
                 },
+                l_AnchorFramseChooser = {
+                    name = L["Set AnchorFrame"],
+                    type = "execute",
+                    func = function() self:StartFrameChooser("l_AnchorFrame") end,
+                    order = 202,
+                },
                 l_AnchorFrameAnchor = {
                     name = L["AnchorFrame Anchor"],
                     type = "input",
@@ -298,12 +304,6 @@ self.optionsTable = {
                     bigStep = 10,
                     order = 212,
                 },
-                l_AnchorFramseChooser = {
-                    name = L["Set AnchorFrame"],
-                    type = "execute",
-                    func = function() self:StartFrameChooser("l_AnchorFrame") end,
-                    order = 221,
-                },
                 r_Title = {
                     name = L["Right Pane"],
                     type = "header",
@@ -313,6 +313,12 @@ self.optionsTable = {
                     name = L["AnchorFrame"],
                     type = "input",
                     order = 301,
+                },
+                r_AnchorFramseChooser = {
+                    name = L["Set AnchorFrame"],
+                    type = "execute",
+                    func = function() self:StartFrameChooser("r_AnchorFrame") end,
+                    order = 302,
                 },
                 r_AnchorFrameAnchor = {
                     name = L["AnchorFrame Anchor"],
@@ -339,12 +345,6 @@ self.optionsTable = {
                     softMax = 200,
                     bigStep = 10,
                     order = 312,
-                },
-                r_AnchorFramseChooser = {
-                    name = L["Set AnchorFrame"],
-                    type = "execute",
-                    func = function() self:StartFrameChooser("r_AnchorFrame") end,
-                    order = 321,
                 },
             },
         },
