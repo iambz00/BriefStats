@@ -1,6 +1,6 @@
 ## Interface: 30400
 ## Title: BriefStats
-## Version: 2.0.1
+## Version: 2.0.2
 ## X-Curse-Project-ID: 605574
 
 ## Notes: Briefly show stats over Character window
