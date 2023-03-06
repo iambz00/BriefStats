@@ -6,7 +6,9 @@ Addon.version = "2.0.0"
 _G[Addon.name] = Addon
 local L = LibStub("AceLocale-3.0"):GetLocale(Addon.name, true)
 local class, engClass = UnitClass("player")
-local GS = shareTable.gs
+--local GS = shareTable.gs
+
+local LibGearScore = LibStub("LibGearScore.1000", true)
 
 local dbDefault = {
     profile = {
@@ -72,13 +74,17 @@ local c = {
         return (run > fly) and ceil(run/7*100) or ceil(fly/7*100)
     end,
     ILVL  = function()
-        local _, ilvl = GS:GetScore()
+        local _, gearScore = LibGearScore:GetScore("player")
+        gearScore = gearScore or {}
+        local ilvl = gearScore.AvgItemLevel or 0
         return format("%.1f", ilvl)
     end,
     GS    = function()
-        local score, _ = GS:GetScore()
-        local r,g,b = GS:GetQuality(score)
-        return string.format("|cff%.2x%.2x%.2x%d|r", r*255, g*255, b*255, score)
+        local _, gearScore = LibGearScore:GetScore("player")
+        gearScore = gearScore or {}
+        local score = gearScore.GearScore or 0
+        local color = gearScore.Color or CreateColor(0.8, 0.8, 0.8)
+        return color:WrapTextInColorCode(score)
     end,
     [L["RDC1" ] ] = "RDC1" ,    [L["RDC2" ] ] = "RDC2" ,
     [L["DMGM" ] ] = "DMGM" ,    [L["CRIAV"] ] = "CRIAV",
