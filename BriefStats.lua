@@ -2,7 +2,7 @@ local addonName, shareTable = ...
 local Addon = LibStub("AceAddon-3.0"):NewAddon(addonName, "AceEvent-3.0")
 Addon.name = addonName
 --Addon.version = GetAddOnMetadata(Addon.name, "Version")
-Addon.version = "2.0.0"
+Addon.version = "2.1.1"
 _G[Addon.name] = Addon
 local L = LibStub("AceLocale-3.0"):GetLocale(Addon.name, true)
 local class, engClass = UnitClass("player")
@@ -135,6 +135,7 @@ function Addon:OnInitialize()
 
     hooksecurefunc("PaperDollFrame_UpdateStats", bsPaperDollFrame_UpdateStats)
 
+    LibGearScore:PLAYER_ENTERING_WORLD()
 end
 
 function bsPaperDollFrame_UpdateStats()
