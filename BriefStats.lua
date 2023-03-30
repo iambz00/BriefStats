@@ -2,7 +2,7 @@ local addonName, shareTable = ...
 local Addon = LibStub("AceAddon-3.0"):NewAddon(addonName, "AceEvent-3.0")
 Addon.name = addonName
 --Addon.version = GetAddOnMetadata(Addon.name, "Version")
-Addon.version = "2.1.1"
+Addon.version = "2.1.2"
 _G[Addon.name] = Addon
 local L = LibStub("AceLocale-3.0"):GetLocale(Addon.name, true)
 local class, engClass = UnitClass("player")
@@ -26,6 +26,15 @@ local dbDefault = {
         r_String = L["DEFAULT_R_STRING"],
     }
 }
+
+local function _GetGearScore()
+    local _, gearScore = LibGearScore:GetScore("player")
+    if not gearScore then
+        LibGearScore:PLAYER_ENTERING_WORLD()
+        _, gearScore = LibGearScore:GetScore("player")
+    end
+    return gearScore
+end
 
 -- FrameXML/PaperDollframe.lua
 local c = {
@@ -74,14 +83,12 @@ local c = {
         return (run > fly) and ceil(run/7*100) or ceil(fly/7*100)
     end,
     ILVL  = function()
-        local _, gearScore = LibGearScore:GetScore("player")
-        gearScore = gearScore or {}
+        local gearScore = _GetGearScore() or {}
         local ilvl = gearScore.AvgItemLevel or 0
         return format("%.1f", ilvl)
     end,
     GS    = function()
-        local _, gearScore = LibGearScore:GetScore("player")
-        gearScore = gearScore or {}
+        local gearScore = _GetGearScore() or {}
         local score = gearScore.GearScore or 0
         local color = gearScore.Color or CreateColor(0.8, 0.8, 0.8)
         return color:WrapTextInColorCode(score)
@@ -134,8 +141,6 @@ function Addon:OnInitialize()
     self.db.RegisterCallback(self, "OnProfileReset", "RefreshUI")
 
     hooksecurefunc("PaperDollFrame_UpdateStats", bsPaperDollFrame_UpdateStats)
-
-    LibGearScore:PLAYER_ENTERING_WORLD()
 end
 
 function bsPaperDollFrame_UpdateStats()
