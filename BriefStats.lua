@@ -2,11 +2,10 @@ local addonName, shareTable = ...
 local Addon = LibStub("AceAddon-3.0"):NewAddon(addonName, "AceEvent-3.0")
 Addon.name = addonName
 --Addon.version = GetAddOnMetadata(Addon.name, "Version")
-Addon.version = "2.1.2"
+Addon.version = "2.1.3"
 _G[Addon.name] = Addon
 local L = LibStub("AceLocale-3.0"):GetLocale(Addon.name, true)
 local class, engClass = UnitClass("player")
---local GS = shareTable.gs
 
 local LibGearScore = LibStub("LibGearScore.1000", true)
 
@@ -29,7 +28,8 @@ local dbDefault = {
 
 local function _GetGearScore()
     local _, gearScore = LibGearScore:GetScore("player")
-    if not gearScore then
+    gearScore = gearScore or { AvgItemLevel = 0, GearScore = 0 }
+    if gearScore.GearScore == 0 then
         LibGearScore:PLAYER_ENTERING_WORLD()
         _, gearScore = LibGearScore:GetScore("player")
     end
@@ -144,7 +144,6 @@ function Addon:OnInitialize()
 end
 
 function bsPaperDollFrame_UpdateStats()
---	if Addon.oldPaperDollFrame_UpdateStats then Addon.oldPaperDollFrame_UpdateStats() end
     local l_text = Addon.db.profile.l_String or ""
     l_text = l_text:gsub("%[([^]^[]*)%]", function(s) return c(s:upper()) end)
     Addon.leftText:SetText(l_text)
