@@ -15,122 +15,118 @@ L["x Offset"] = true
 L["y Offset"] = true
 
 L["Usage"] =
-[[Keywords - All stats are % with some exceptions, Case insensitive
-[GS]=[GearScore]  [ILVL]=[ItemLevel]
-[Reduction] [ReductionBoss] |cffccccccReduction from Armor(Same / 83)|r
-[Damage] |cffccccccDamage Mod %|r  [CritAvoid] |cffccccccCrit Avoidance|r
-[TrueAvoid] |cffccccccMiss+Parry+Dodge|r  [TotalAvoid] |cffccccccM+D+P+Block|r [BV]=[BlockValue]
-[ArmorPen] |cffcccccc%|r [ArmorPenR] |cffccccccRating(Not %)|r
-|cffccccccFor Melee|r  [MHit] [MCrit] [MHaste]
-|cffccccccFor Ranged|r [RHit] [RCrit] [RHaste]
-|cffccccccFor Spell|r  [SHit] [SHaste] [Heal] [SpellPen]
-|cffffe57f[Holy] [HolyCrit]|r    |cffff7f00[Fire] [FireCrit]|r      |cff4cff4c[Nature] [NatureCrit]|r
-|cff7fffff[Frost] [FrostCrit]|r  |cff7f7fff[Shadow] [ShadowCrit]|r  |cffff7fff[Arcane] [ArcaneCrit]|r
+[[Keywords (Case insensitive, Ignore white space)
+[GS] [GearScore]  [ILVL] [ItemLevel]
+[Mastery] [Mastery Rating] [Mastery R] (R = Rating)
+[Damage] |cffccccccDamage Mod %|r
+[Reduction] [Boss Reduction] |cffccccccReduction from Armor(Same / Boss)|r
+[Armor] [Dodge] [Parry] [Block]
+[Avoidance] |cffccccccMiss+Parry+Dodge|r  [Mitigation] |cffccccccM+D+P+Block|r
+[Melee/Ranged Hit/Crit/Haste/AP/AttackPower]
+[Melee/Ranged Hit/Crit/Haste Rating]
+[Spell Hit/Haste/Pen/Penetration] [Spell Hit/Haste Rating] [Heal]
+|cffffe57f[Holy] [Holy Crit]|r    |cffff7f00[Fire] [Fire Crit]|r      |cff4cff4c[Nature] [Nature Crit]|r
+|cff7fffff[Frost] [Frost Crit]|r  |cff7f7fff[Shadow] [Shadow Crit]|r  |cffff7fff[Arcane] [Arcane Crit]|r
 [Speed] |cffccccccMovement Speed|r]]
-L["RDC1" ] = "REDUCTION"
-L["RDC2" ] = "REDUCTIONBOSS"
-L["DMGM" ] = "DAMAGE"
-L["CRIAV"] = "CRITAVOID"
-L["TRUEA"] = "TRUEAVOID"
-L["AVOID"] = "TOTALAVOID"
-L["BV"   ] = "BLOCKVALUE"
-L["MHIT" ] = "MELEEHIT"     -- 
-L["MCRI" ] = "MCRIT"
-L["MHAS" ] = "MHASTE"
-L["APEN" ] = "ARMORPEN"
-L["APENR"] = "ARMORPENR"
-L["RHIT" ] = "RANGEDHIT"    -- 
-L["RCRI" ] = "RCRIT"
-L["RHAS" ] = "RHASTE"
-L["SPHO" ] = "HOLY"
-L["SPFI" ] = "FIRE"
-L["SPNA" ] = "NATURE"
-L["SPFR" ] = "FROST"
-L["SPSH" ] = "SHADOW"
-L["SPAR" ] = "ARCANE"
-L["SCHO" ] = "HOLYCRIT"
-L["SCFI" ] = "FIRECRIT"
-L["SCNA" ] = "NATURECRIT"
-L["SCFR" ] = "FROSTCRIT"
-L["SCSH" ] = "SHADOWCRIT"
-L["SCAR" ] = "ARCANECRIT"
-L["SHEAL"] = "HEAL"
-L["SHIT" ] = "SPELLHIT"     -- 
-L["SHAS "] = "SHASTE"
-L["SPEN" ] = "SPELLPEN"
-L["SPEED"] = "MOVESPEED"    -- 
-L["ILVL" ] = "ITEMLEVEL"
-L["GS"   ] = "GEARSCORE"
-shareTable.enUS = {
-}
+
+L["ARMOR"]      = true
+L["REDUCTION"]  = { "REDUCTION", "REDUCE" }
+L["BOSS"]       = true
+L["DAMAGE"]     = true
+L["AVOIDANCE"]  = { "TRUEAVOIDANCE", "AVOIDANCE" }
+L["MITIGATION"] = { "TOTALMITIGATION", "MITIGATION" }
+L["DODGE"]      = true
+L["PARRY"]      = true
+L["BLOCK"]      = true
+L["RESLIENCE"]  = true
+L["MELEE"]      = true
+L["RANGED"]     = true
+L["ATTACKPOWER"]= { "ATTACKPOWER", "AP" }
+L["SPELL"]      = true
+L["HOLY"]       = true
+L["FIRE"]       = true
+L["NATURE"]     = true
+L["FROST"]      = true
+L["SHADOW"]     = true
+L["ARCANE"]     = true
+L["HEAL"]       = true
+L["HIT"]        = true
+L["CRITICAL"]   = { "CRITICAL", "CRIT" }
+L["HASTE"]      = true
+L["MASTERY"]    = true
+L["PENETRATION"]= { "PENETRATION", "PEN" }
+L["RATING"]     = true
+L["ITEMLEVEL"]  = { "ITEMLEVEL", "ILVL" }
+L["GEARSCORE"]  = { "GEARSCORE", "GS" }
+L["SPEED"]      = true
 
 L["DEFAULT_L_STRING_WARRIOR"] =
-[[Pen [ArmorPen]%
-Hit [MHit]%
-Has [MHaste]%
+[[Hit [Melee Hit]% [Melee Hit Rating]
+Crit [Melee Crit]%
+Haste [Melee Haste]%
+Mastery [Mastery]%
 
-Avoid [TrueAvoid]%
-Total [TotalAvoid]% [BV]
--Crit [CritAvoid]%]]
+Armor [Armor]
+Avoid [Avoidance]%
+T.Mit [Mitigation]%]]
 L["DEFAULT_L_STRING_HUNTER"] = 
-[[ArmorPen [ArmorPen]%
-Hit [RHit]%
-Haste [RHaste]%
-
--Crit [CritAvoid]%]]
+[[Hit [Ranged Hit]% [Ranged Hit Rating]
+Crit [Ranged Crit]%
+Haste [Ranged Haste]%
+Mastery [Mastery]%]]
 L["DEFAULT_L_STRING_SHAMAN"] = 
-[[ArmorPen [ArmorPen]%
-Nat [Nature] [NatureCrit]%
-Hit [MHit]% [SHit]%
-Haste [MHaste]% [SHaste]%
-
--Crit [CritAvoid]%]]
+[[Nature [Nature] [Nature Crit]%
+Hit [Melee Hit]% [Spell Hit]%
+Haste [Melee Haste]% [Spell Haste]%
+Mastery [Mastery]%]]
 L["DEFAULT_L_STRING_DEATHKNIGHT"] = 
-[[Hit [MHit]% [SHit]%
-Haste [MHaste]%
+[[Hit [Melee Hit]% [Melee Hit Rating]
+Crit [Melee Crit]%
+Haste [Melee Haste]%
+Mastery [Mastery]%
 
-TrueAvoid [TrueAvoid]%
--Crit [CritAvoid]%]]
+Armor [Armor]
+Avoid [Avoidance]%
+T.Mit [Mitigation]%]]
 L["DEFAULT_L_STRING_ROGUE"] = 
-[[ArmorPen [ArmorPen]%
-Hit [MHit]%
-Haste [MHaste]%
-
--Crit [CritAvoid]%]]
+[[Hit [Melee Hit]% [Melee Hit Rating]
+Crit [Melee Crit]%
+Haste [Melee Haste]%
+Mastery [Mastery]%]]
 L["DEFAULT_L_STRING_MAGE"] = 
-[[Arc [Arcane] [ArcaneCrit]%
-Fro [Frost] [FrostCrit]%
-Hit [SHit]%
-Has [SHaste]%
-
--Crit [CritAvoid]%]]
+[[Fire [Fire] [Fire Crit]%
+Hit [Spell Hit]% [Spell Hit Rating]
+Has [Spell Haste]%
+Mastery [Mastery]%]]
 L["DEFAULT_L_STRING_DRUID"] = 
-[[ArmorPen [ArmorPen]%
-Nat [Nature] [NatureCrit]%
-Hit [MHit]% [SHit]%
-Haste [MHaste]% [SHaste]%
+[[Hit [Melee Hit]% [Melee Hit Rating]
+Crit [Melee Crit]
+Haste [Melee Haste]%
+Mastery [Mastery]%
 
--Crit [CritAvoid]%]]
+Armor [Armor]
+Avoid [Avoidance]%]]
 L["DEFAULT_L_STRING_PALADIN"] = 
-[[Hol [Holy] [HolyCrit]%
-Hit [MHit]% [SHit]%
+[[Heal [Heal] [Holy Crit]
+Hit [Melee Hit]% [Melee Hit Rating]
+Crit [Melee Crit]%
+Haste [Melee Haste]%
+Mastery [Mastery]%
 
-Avoid [TrueAvoid]%
-Total [TotalAvoid]%
--Crit [CritAvoid]%]]
+Armor [Armor]
+Avoid [Avoidance]%
+T.Mit [Mitigation]%]]
 L["DEFAULT_L_STRING_PRIEST"] = 
-[[Sha [Shadow] [ShadowCrit]%
-Heal [Heal]
-Hit  [SHit]%
-Has [SHaste]%
-
--Crit [CritAvoid]%]]
+[[Shadow [Shadow] [Shadow Crit]%
+Heal [Heal] [Holy Crit]%
+Hit  [Spell Hit]% [Spell Hit Rating]
+Has [Spell Haste]%
+Mastery [Mastery]%]]
 L["DEFAULT_L_STRING_WARLOCK"] = 
-[[Sha [Shadow] [ShadowCrit]%
-Hit [SHit]%
-Has [SHaste]%
-
--Crit [CritAvoid]%]]
+[[Shadow [Shadow] [Shadow Crit]%
+Hit  [Spell Hit]% [Spell Hit Rating]
+Has [Spell Haste]%
+Mastery [Mastery]%]]
 L["DEFAULT_R_STRING"] = 
 [[[ILVL]
 [GS]

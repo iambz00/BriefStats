@@ -2,7 +2,7 @@ local addonName, shareTable = ...
 local Addon = LibStub("AceAddon-3.0"):NewAddon(addonName, "AceEvent-3.0")
 Addon.name = addonName
 --Addon.version = GetAddOnMetadata(Addon.name, "Version")
-Addon.version = "2.1.3"
+Addon.version = "2.2.0"
 _G[Addon.name] = Addon
 local L = LibStub("AceLocale-3.0"):GetLocale(Addon.name, true)
 local class, engClass = UnitClass("player")
@@ -11,17 +11,17 @@ local LibGearScore = LibStub("LibGearScore.1000", true)
 
 local dbDefault = {
     profile = {
-        l_AnchorFrame = "PlayerStatFrameLeftDropDown",
-        l_AnchorFrameAnchor = "TOPLEFT",
+        l_AnchorFrame = "CharacterModelScene",
+        l_AnchorFrameAnchor = "BOTTOMLEFT",
         l_Anchor = "BOTTOMLEFT",
-        l_OffsetX = 20,
-        l_OffsetY = 4,
+        l_OffsetX = 10,
+        l_OffsetY = 20,
         l_String = L["DEFAULT_L_STRING_"..engClass],
-        r_AnchorFrame = "PlayerStatFrameRightDropDown",
-        r_AnchorFrameAnchor = "TOPRIGHT",
+        r_AnchorFrame = "CharacterModelScene",
+        r_AnchorFrameAnchor = "BOTTOMRIGHT",
         r_Anchor = "BOTTOMRIGHT",
-        r_OffsetX = -20,
-        r_OffsetY = 4,
+        r_OffsetX = -10,
+        r_OffsetY = 20,
         r_String = L["DEFAULT_R_STRING"],
     }
 }
@@ -36,51 +36,125 @@ local function _GetGearScore()
     return gearScore
 end
 
--- FrameXML/PaperDollframe.lua
+local normalize_base = {
+    ["ARMOR"]       = "ARMOR",
+    ["REDUCTION"]   = "REDUCE",
+    ["BOSS"]        = "BOSS",
+    ["DAMAGE"]      = "DMG",
+    ["AVOIDANCE"]   = "AVOID",
+    ["MITIGATION"]  = "MIT",
+    ["DODGE"]       = "DODGE",
+    ["PARRY"]       = "PARRY",
+    ["BLOCK"]       = "BLOCK",
+    ["RESLIENCE"]   = "RES",
+    ["MELEE"]       = "M",
+    ["RANGED"]      = "R",
+    ["ATTACKPOWER"] = "AP",
+    ["SPELL"]       = "S",
+    ["HOLY"]        = "HOLY",
+    ["FIRE"]        = "FIRE",
+    ["NATURE"]      = "NATURE",
+    ["FROST"]       = "FROST",
+    ["SHADOW"]      = "SHADOW",
+    ["ARCANE"]      = "ARCANE",
+    ["HEAL"]        = "HEAL",
+    ["HIT"]         = "HIT",
+    ["CRITICAL"]    = "CRIT",
+    ["HASTE"]       = "HAS",
+    ["MASTERY"]     = "MAS",
+    ["PENETRATION"] = "PEN",
+    ["MASTERY"]     = "MAS",
+    ["RATING"]      = "R",
+    ["ITEMLEVEL"]   = "ILVL",
+    ["GEARSCORE"]   = "GS",
+    ["SPEED"]       = "SPEED"
+}
+local normal_word = { }
+-- Expand table to words
+for k, v in pairs(normalize_base) do
+    local word = L[k]
+    if type(word) == "table" then
+        for _, w in pairs(word) do
+            normal_word[w] = v
+        end
+    else
+        normal_word[word] = v
+    end
+end
+
 local c = {
-    RDC1  = function()
+    ARMOR = function() return UnitArmor("player") end,
+    REDUCE = function()
         local _, effectiveArmor = UnitArmor("player")
         return format("%.2f", PaperDollFrame_GetArmorReduction(effectiveArmor, UnitLevel("player")))
     end,
-    RDC2  = function()
+    BOSSREDUCE = function()
         local _, effectiveArmor = UnitArmor("player")
-        return format("%.2f", PaperDollFrame_GetArmorReduction(effectiveArmor, 83))
+        return format("%.2f", PaperDollFrame_GetArmorReduction(effectiveArmor, 88))
     end,
-    DMGM  = function()
+    DMG  = function()
         local _,_,_,_,_,_,percent = UnitDamage("player")
         return floor(percent*100+0.5)
     end,
-    CRIAV = function() return format("%.2f", GetDodgeBlockParryChanceFromDefense() + GetCombatRatingBonus(CR_RESILIENCE_CRIT_TAKEN)) end,
-    TRUEA = function() return format("%.2f", 5 + GetDodgeBlockParryChanceFromDefense() + GetDodgeChance() + GetParryChance()) end,
-    AVOID = function() return format("%.2f", 5 + GetDodgeBlockParryChanceFromDefense() + GetDodgeChance() + GetParryChance() + GetBlockChance()) end,
-    BV    = function() return GetShieldBlock() end,
+    AVOID = function() return format("%.2f", BASE_MISS_CHANCE_PHYSICAL[0] + GetDodgeChance() + GetParryChance()) end,
+    MIT   = function() return format("%.2f", BASE_MISS_CHANCE_PHYSICAL[0] + GetDodgeChance() + GetParryChance() + GetBlockChance()) end,
+    DODGE = function() return format("%.2f", GetDodgeChance()) end,
+    PARRY = function() return format("%.2f", GetParryChance()) end,
+    BLOCK = function() return format("%.2f", GetBlockChance()) end,
+    RES   = function() return format("%.2f", GetCombatRatingBonus(COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN)) end,
+    RESR  = function() return format("%.2f", GetCombatRating(COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN)) end,
+    MAP   = function()  -- Melee AP
+        local base, posBuff, negBuff = UnitAttackPower("player")
+        ap = base + posBuff + negBuff
+        return (ap > 0) and ap or 0
+    end,
+    RAP   = function()  -- Ranged AP
+        local base, posBuff, negBuff = UnitRangedAttackPower("player")
+        ap = base + posBuff + negBuff
+        return (ap > 0) and ap or 0
+    end,
     MHIT  = function() return format("%.2f", GetCombatRatingBonus(CR_HIT_MELEE)) end,
-    MCRI  = function() return format("%.2f", GetCritChance()) end,
+    MHITR = function() return GetCombatRating(CR_HIT_MELEE) end,
+    MCRIT = function() return format("%.2f", GetCritChance()) end,
     MHAS  = function() return format("%.2f", GetCombatRatingBonus(CR_HASTE_MELEE)) end,
-    APEN  = function() return format("%.2f", GetArmorPenetration()) end,
-    APENR = function() return GetCombatRating(CR_ARMOR_PENETRATION) end,
+    MHASR = function() return GetCombatRating(CR_HASTE_MELEE) end,
     RHIT  = function() return format("%.2f", GetCombatRatingBonus(CR_HIT_RANGED)) end,
-    RCRI  = function() return format("%.2f", GetRangedCritChance()) end,
+    RHITR = function() return GetCombatRating(CR_HIT_RANGED) end,
+    RCRIT = function() return format("%.2f", GetRangedCritChance()) end,
     RHAS  = function() return format("%.2f", GetCombatRatingBonus(CR_HASTE_RANGED)) end,
-    SPHO  = function() return "|cffffe57f"..GetSpellBonusDamage(2).."|r" end,
-    SPFI  = function() return "|cffff7f00"..GetSpellBonusDamage(3).."|r" end,
-    SPNA  = function() return "|cff4cff4c"..GetSpellBonusDamage(4).."|r" end,
-    SPFR  = function() return "|cff7fffff"..GetSpellBonusDamage(5).."|r" end,
-    SPSH  = function() return "|cff7f7fff"..GetSpellBonusDamage(6).."|r" end,
-    SPAR  = function() return "|cffff7fff"..GetSpellBonusDamage(7).."|r" end,
-    SCHO  = function() return format("|cffffe57f%.2f|r", GetSpellCritChance(2)) end,
-    SCFI  = function() return format("|cffff7f00%.2f|r", GetSpellCritChance(3)) end,
-    SCNA  = function() return format("|cff4cff4c%.2f|r", GetSpellCritChance(4)) end,
-    SCFR  = function() return format("|cff7fffff%.2f|r", GetSpellCritChance(5)) end,
-    SCSH  = function() return format("|cff7f7fff%.2f|r", GetSpellCritChance(6)) end,
-    SCAR  = function() return format("|cffff7fff%.2f|r", GetSpellCritChance(7)) end,
-    SHEAL = function() return GetSpellBonusHealing() end,
+    RHASR = function() return GetCombatRating(CR_HASTE_RANGED) end,
+    HOLY   = function() return "|cffffe57f"..GetSpellBonusDamage(2).."|r" end,
+    FIRE   = function() return "|cffff7f00"..GetSpellBonusDamage(3).."|r" end,
+    NATURE = function() return "|cff4cff4c"..GetSpellBonusDamage(4).."|r" end,
+    FROST  = function() return "|cff7fffff"..GetSpellBonusDamage(5).."|r" end,
+    SHADOW = function() return "|cff7f7fff"..GetSpellBonusDamage(6).."|r" end,
+    ARCANE = function() return "|cffff7fff"..GetSpellBonusDamage(7).."|r" end,
+    HOLYCRIT   = function() return format("|cffffe57f%.2f|r", GetSpellCritChance(2)) end,
+    FIRECRIT   = function() return format("|cffff7f00%.2f|r", GetSpellCritChance(3)) end,
+    NATURECRIT = function() return format("|cff4cff4c%.2f|r", GetSpellCritChance(4)) end,
+    FROSTCRIT  = function() return format("|cff7fffff%.2f|r", GetSpellCritChance(5)) end,
+    SHADOWCRIT = function() return format("|cff7f7fff%.2f|r", GetSpellCritChance(6)) end,
+    ARCANECRIT = function() return format("|cffff7fff%.2f|r", GetSpellCritChance(7)) end,
+    SHEAL = "HEAL",
+    HEAL  = function() return GetSpellBonusHealing() end,
     SHIT  = function() return format("%.2f", GetCombatRatingBonus(CR_HIT_SPELL)) end,
+    SHITR = function() return GetCombatRating(CR_HIT_SPELL) end,
     SHAS  = function() return format("%.2f", GetCombatRatingBonus(CR_HASTE_SPELL)) end,
+    SHASR = function() return GetCombatRating(CR_HASTE_SPELL) end,
     SPEN  = function() return GetSpellPenetration() end,
-    SPEED = function()	-- Returns best speed
-        local _, run, fly = GetUnitSpeed("player")
-        return (run > fly) and ceil(run/7*100) or ceil(fly/7*100)
+    MAS   = function() return format("%.2f", GetCombatRatingBonus(CR_MASTERY)) end,
+    MASR  = function() return GetCombatRating(CR_MASTERY) end,
+    SPEED = function()	-- Returns current speed
+        local _, run, fly, swim = GetUnitSpeed("player")
+        local speed
+        if IsFlying() then
+            speed = fly
+        elseif IsSwimming() then
+            speed = swim
+        else
+            speed = run
+        end
+        return ceil(speed / BASE_MOVEMENT_SPEED * 100)
     end,
     ILVL  = function()
         local gearScore = _GetGearScore() or {}
@@ -93,23 +167,7 @@ local c = {
         local color = gearScore.Color or CreateColor(0.8, 0.8, 0.8)
         return color:WrapTextInColorCode(score)
     end,
-    [L["RDC1" ] ] = "RDC1" ,    [L["RDC2" ] ] = "RDC2" ,
-    [L["DMGM" ] ] = "DMGM" ,    [L["CRIAV"] ] = "CRIAV",
-    [L["TRUEA"] ] = "TRUEA",    [L["AVOID"] ] = "AVOID",    [L["BV"   ] ] = "BV"   ,
-    [L["MHIT" ] ] = "MHIT" ,    [L["MCRI" ] ] = "MCRI" ,    [L["MHAS" ] ] = "MHAS" ,
-    [L["APEN" ] ] = "APEN" ,    [L["APENR"] ] = "APENR",
-    [L["RHIT" ] ] = "RHIT" ,    [L["RCRI" ] ] = "RCRI" ,    [L["RHAS" ] ] = "RHAS" ,
-    [L["SPHO" ] ] = "SPHO" ,    [L["SPFI" ] ] = "SPFI" ,    [L["SPNA" ] ] = "SPNA" ,
-    [L["SPFR" ] ] = "SPFR" ,    [L["SPSH" ] ] = "SPSH" ,    [L["SPAR" ] ] = "SPAR" ,
-    [L["SCHO" ] ] = "SCHO" ,    [L["SCFI" ] ] = "SCFI" ,    [L["SCNA" ] ] = "SCNA" ,
-    [L["SCFR" ] ] = "SCFR" ,    [L["SCSH" ] ] = "SCSH" ,    [L["SCAR" ] ] = "SCAR" ,
-    [L["SHEAL"] ] = "SHEAL",
-    [L["SHIT" ] ] = "SHIT" ,    [L["SHAS "] ] = "SHAS" ,    [L["SPEN" ] ] = "SPEN" ,
-    [L["SPEED"] ] = "SPEED",    [L["ILVL" ] ] = "ILVL" ,    [L["GS"   ] ] = "GS"   ,
 }
-for k, v in pairs(shareTable[GetLocale()] or {}) do
-    c[k] = c[v] -- or v
-end
 local _mt = {
     __call = function(t, k)
         local v = t[k]
@@ -143,20 +201,28 @@ function Addon:OnInitialize()
     hooksecurefunc("PaperDollFrame_UpdateStats", bsPaperDollFrame_UpdateStats)
 end
 
+local function normalize(str)
+    local s = str:gsub("%s", ""):upper()
+    for k, v in pairs(normal_word) do
+        s = s:gsub(k, v)
+    end
+    return s
+end
+
 function bsPaperDollFrame_UpdateStats()
     local l_text = Addon.db.profile.l_String or ""
-    l_text = l_text:gsub("%[([^]^[]*)%]", function(s) return c(s:upper()) end)
+    l_text = l_text:gsub("%[([^]^[]*)%]", function(s) return c(normalize(s)) end)
     Addon.leftText:SetText(l_text)
     local r_text = Addon.db.profile.r_String or ""
-    r_text = r_text:gsub("%[([^]^[]*)%]", function(s) return c(s:upper()) end)
+    r_text = r_text:gsub("%[([^]^[]*)%]", function(s) return c(normalize(s)) end)
     Addon.rightText:SetText(r_text)
 end
 
 function Addon:InitDB()
     self.db = LibStub("AceDB-3.0"):New(self.name.."DB", dbDefault, engClass) -- defaultProfileName: class name
 
-    if self.db.profile.default or not self.db.global.version or self.db.global.version < "2.0.0" then
-        self.db:ResetDB(engClass)
+    if self.db.profile.default or not self.db.global.version or self.db.global.version < "2.2" then
+        self.db:ResetDB()
         self.db.global.version = Addon.version
     end
 end
