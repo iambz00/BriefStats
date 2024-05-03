@@ -4,13 +4,10 @@ local L = LibStub('AceLocale-3.0'):NewLocale(addonName, "enUS", true)
 if not L then return end
 
 L["Display string"] = true
-L["Left Pane"] = true
-L["Right Pane"] = true
-L["Position"] = true
-L["AnchorFrame"] = true
-L["Set AnchorFrame"] = true
-L["AnchorFrame Anchor"] = true
-L["Pane Anchor"] = true
+L["Pane 1(Top Left)"] = true
+L["Pane 2(Top Right)"] = true
+L["Pane 3(Bottom Left)"] = true
+L["Pane 4(Bottom Right)"] = true
 L["x Offset"] = true
 L["y Offset"] = true
 

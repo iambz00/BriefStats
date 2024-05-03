@@ -4,15 +4,12 @@ local L = LibStub('AceLocale-3.0'):NewLocale(addonName, "koKR")
 if not L then return end
 
 L["Display string"] = "표시 정보"
-L["Left Pane"] = "왼쪽 패널"
-L["Right Pane"] = "오른쪽 패널"
-L["Position"] = "위치"
-L["AnchorFrame"] = "기준 프레임"
-L["Set AnchorFrame"] = "프레임 선택"
-L["AnchorFrame Anchor"] = "프레임 기준점"
-L["Pane Anchor"] = "패널 기준점"
-L["x Offset"] = "x이동"
-L["y Offset"] = "y이동"
+L["Pane 1(Top Left)"] = "패널1 (좌상단)"
+L["Pane 2(Top Right)"] = "패널2 (우상단)"
+L["Pane 3(Bottom Left)"] = "패널3 (좌하단)"
+L["Pane 4(Bottom Right)"] = "패널4 (우하단)"
+L["x Offset"] = "수평 위치 조정"
+L["y Offset"] = "수직 위치 조정"
 
 L["Usage"] =
 [[사용 키워드 (띄어쓰기 무시)

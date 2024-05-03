@@ -9,20 +9,54 @@ local class, engClass = UnitClass("player")
 
 local LibGearScore = LibStub("LibGearScore.1000", true)
 
+--[[    TOPLEFT         TOPRIGHT
+        [Pane1]         [Pane2]
+
+            Character Frame
+
+        [Pane3]         [Pane4]
+        BOTTOMLEFT      BOTTOMRIGHT
+]]
 local dbDefault = {
     profile = {
-        l_AnchorFrame = "CharacterModelScene",
-        l_AnchorFrameAnchor = "BOTTOMLEFT",
-        l_Anchor = "BOTTOMLEFT",
-        l_OffsetX = 20,
-        l_OffsetY = 30,
-        l_String = L["DEFAULT_L_STRING_"..engClass],
-        r_AnchorFrame = "CharacterModelScene",
-        r_AnchorFrameAnchor = "BOTTOMRIGHT",
-        r_Anchor = "BOTTOMRIGHT",
-        r_OffsetX = -20,
-        r_OffsetY = 30,
-        r_String = L["DEFAULT_R_STRING"],
+        pane = {
+            [1] = {
+                anchorFrame = "CharacterModelScene",
+                anchorFrameAnchor = "TOPLEFT",
+                anchor = "TOPLEFT",
+                justfyV = "TOP", justfyH = "LEFT",
+                offsetX = 20,
+                offsetY = -30,
+                str = "",
+            },
+            [2] = {
+                anchorFrame = "CharacterModelScene",
+                anchorFrameAnchor = "TOPRIGHT",
+                anchor = "TOPRIGHT",
+                justfyV = "TOP", justfyH = "RIGHT",
+                offsetX = -20,
+                offsetY = -30,
+                str = "",
+            },
+            [3] = {
+                anchorFrame = "CharacterModelScene",
+                anchorFrameAnchor = "BOTTOMLEFT",
+                anchor = "BOTTOMRIGHT",
+                justfyV = "BOTTOM", justfyH = "LEFT",
+                offsetX = 20,
+                offsetY = 30,
+                str = L["DEFAULT_L_STRING_"..engClass],
+            },
+            [4] = {
+                anchorFrame = "CharacterModelScene",
+                anchorFrameAnchor = "BOTTOMRIGHT",
+                anchor = "BOTTOMRIGHT",
+                justfyV = "BOTTOM", justfyH = "RIGHT",
+                offsetX = -20,
+                offsetY = 30,
+                str = L["DEFAULT_R_STRING"],
+            },
+        }
     }
 }
 
@@ -202,12 +236,11 @@ local function normalize(str)
 end
 
 function bsPaperDollFrame_UpdateStats()
-    local l_text = Addon.db.profile.l_String or ""
-    l_text = l_text:gsub("%[([^]^[]*)%]", function(s) return c(normalize(s)) end)
-    Addon.leftText:SetText(l_text)
-    local r_text = Addon.db.profile.r_String or ""
-    r_text = r_text:gsub("%[([^]^[]*)%]", function(s) return c(normalize(s)) end)
-    Addon.rightText:SetText(r_text)
+    for i, pane in ipairs(Addon.pane) do
+        local text = Addon.db.profile.pane[i].str or ""
+        text = test:gsub("%[([^]^[]*)%]", function(s) return c(normalize(s)) end)
+        pane.text:SetText(text)
+    end
 end
 
 function Addon:InitDB()
@@ -221,37 +254,26 @@ end
 
 function Addon:InitUI()
     local db = self.db.profile
-    local ui = CreateFrame("Frame", self.name.."LeftFrame", _G[db.l_AnchorFrame])
-    ui:EnableMouse(false)
-    ui:EnableMouseWheel(false)
-    ui:SetWidth(200)
-    ui:SetHeight(300)
-    self.leftPane = ui
-    local text = ui:CreateFontString()
-    text:SetAllPoints()
-    text:SetFontObject("GameFontNormalSmall")
-    text:SetJustifyH("LEFT")
-    text:SetJustifyV("BOTTOM")
-    text:SetTextColor(1, 1, 1)
-    text:SetText(self.name)
-    self.leftText = text
+    self.pane = { }
+    for i, pane in ipairs(db.pane) do
+        local ui = CreateFrame("Frame", self.name.."Pane"..i, _G[pane.anchorFrame])
+        ui:EnableMouse(false)
+        ui:EnableMouseWheel(false)
+        ui:SetWidth(200)
+        ui:SetHeight(300)
+        local text = ui:CreateFontString()
+        text:SetAllPoints()
+        text:SetFontObject("GameFontNormalSmall")
+        text:SetJustifyH("LEFT")
+        text:SetJustifyV("BOTTOM")
+        text:SetTextColor(1, 1, 1)
+        text:SetText(self.name)
+        ui.text = text
+        self.pane[i] = ui
+    end
 
-    ui = CreateFrame("Frame", self.name.."RightFrame", _G[db.r_AnchorFrame])
-    ui:EnableMouse(false)
-    ui:EnableMouseWheel(false)
-    ui:SetWidth(200)
-    ui:SetHeight(200)
-    self.rightPane = ui
-    text = ui:CreateFontString()
-    text:SetAllPoints()
-    text:SetFontObject("GameFontNormalSmall")
-    text:SetJustifyH("RIGHT")
-    text:SetJustifyV("BOTTOM")
-    text:SetTextColor(1, 1, 1)
-    text:SetText(self.name)
-    self.rightText = text
-
-    local btn = CreateFrame("Button", self.name.."ConfigButton", _G[db.l_AnchorFrame], "UIPanelButtonTemplate")
+    -- Config Button is at Pane 1(Top Left), a Small Red Button
+    local btn = CreateFrame("Button", self.name.."ConfigButton", _G[self.pane[1].anchorFrame], "UIPanelButtonTemplate")
     btn:EnableMouse(true)
     btn:SetWidth(18)
     btn:SetHeight(12)
@@ -266,29 +288,31 @@ function Addon:InitUI()
     end)
     btn:SetScript("OnEnter", function()
         GameTooltip:Hide()
-        GameTooltip:SetOwner(btn, "ANCHOR_BOTTOMRIGHT")
+        GameTooltip:SetOwner(btn, "ANCHOR_TOPRIGHT")
         GameTooltip:AddLine(self.name.." Options")
         GameTooltip:Show()
     end)
     btn:SetScript("OnLeave", function()
         GameTooltip:Hide()
     end)
-    self.btn = btn
+    self.configButton = btn
 
-    self.leftPane:Show()
-    self.rightPane:Show()
+    for _, pane in ipairs(self.pane) do
+        pane:Show()
+    end
     self:RefreshUI()
 end
 
 function Addon:RefreshUI()
     local db = self.db.profile
-    self.leftPane:SetParent(_G[db.l_AnchorFrame])
-    self.leftPane:ClearAllPoints()
-    self.leftPane:SetPoint(db.l_Anchor, db.l_AnchorFrame, db.l_AnchorFrameAnchor, db.l_OffsetX, db.l_OffsetY)
-    self.btn:SetPoint(db.l_Anchor, db.l_AnchorFrame, db.l_AnchorFrameAnchor, db.l_OffsetX, db.l_OffsetY)
-    self.rightPane:SetParent(_G[db.r_AnchorFrame])
-    self.rightPane:ClearAllPoints()
-    self.rightPane:SetPoint(db.r_Anchor, db.r_AnchorFrame, db.r_AnchorFrameAnchor, db.r_OffsetX, db.r_OffsetY)
+    for i, pane in ipairs(self.pane) do
+        local pdb = db.pane[i]
+        pane:SetParent(_G[pdb.anchorFrame])
+        pane:ClearAllPoints()
+        pane:SetPoint(pdb.anchor, pdb.anchorFrame, pdb.anchorFrameAnchor, pdb.offsetX, pdb.offsetY)
+    end
+    local p1db = db.pane[1]
+    self.configButton:SetPoint(p1db.anchor, p1db.anchorFrame, p1db.anchorFrameAnchor, p1db.offsetX, p1db.offsetY)
     bsPaperDollFrame_UpdateStats()
 end
 
@@ -299,121 +323,39 @@ self.optionsTable = {
     get = function(info) return self.db.profile[info[#info]] end,
     set = function(info, value) self.db.profile[info[#info]] = value Addon:RefreshUI() end,
     args = {
-        settings = {
-            name = L["Display string"],
+        pane1 = {
+            name = L["Pane 1(Top Left)"],
             type = "group",
             order = 11,
+            get = function(info)
+                local num = tonumber(info:sub(info:len()))
+                info = info:sub(1, info:len()-1)
+                return self.db.profile.pane[num][info]
+            end,
+            set = function(info, value)
+                local num = tonumber(info:sub(info:len()))
+                info = info:sub(1, info:len()-1)
+                self.db.profile.pane[num][info] = value
+            end,
             args = {
-                l_String = {
-                    name = L["Left Pane"],
-                    type = "input",
-                    multiline = 8,
-                    width = "double",
-                    order = 101,
+                offsetX1 = {
+                    name = L["x Offset"],
+                    type = "range", softMin = -200, softMax = 200, bigStep = 10,
+                    order = 211,
                 },
-                r_String = {
-                    name = L["Right Pane"],
-                    type = "input",
-                    multiline = 3,
-                    width = "double",
-                    order = 102,
+                offsetY1 = {
+                    name = L["y Offset"],
+                    type = "range", softMin = -200, softMax = 200, bigStep = 10,
+                    order = 212,
+                },
+                str1 = {
+                    type = "input", multiline = 5, width = "double",
+                    order = 101,
                 },
                 usage = {
                     name = L["Usage"],
                     type = "description",
                     order = 201,
-                },
-
-            },
-        },
-        anchor = {
-            name = L["Position"],
-            type = "group",
-            order = 21,
-            args = {
-                l_Title = {
-                    name = L["Left Pane"],
-                    type = "header",
-                    order = 200,
-                },
-                l_AnchorFrame = {
-                    name = L["AnchorFrame"],
-                    type = "input",
-                    order = 201,
-                },
-                l_AnchorFramseChooser = {
-                    name = L["Set AnchorFrame"],
-                    type = "execute",
-                    func = function() self:StartFrameChooser("l_AnchorFrame") end,
-                    order = 202,
-                },
-                l_AnchorFrameAnchor = {
-                    name = L["AnchorFrame Anchor"],
-                    type = "input",
-                    order = 203,
-                },
-                l_Anchor = {
-                    name = L["Pane Anchor"],
-                    type = "input",
-                    order = 204,
-                },
-                l_OffsetX = {
-                    name = L["x Offset"],
-                    type = "range",
-                    softMin = -200,
-                    softMax = 200,
-                    bigStep = 10,
-                    order = 211,
-                },
-                l_OffsetY = {
-                    name = L["y Offset"],
-                    type = "range",
-                    softMin = -200,
-                    softMax = 200,
-                    bigStep = 10,
-                    order = 212,
-                },
-                r_Title = {
-                    name = L["Right Pane"],
-                    type = "header",
-                    order = 300,
-                },
-                r_AnchorFrame = {
-                    name = L["AnchorFrame"],
-                    type = "input",
-                    order = 301,
-                },
-                r_AnchorFramseChooser = {
-                    name = L["Set AnchorFrame"],
-                    type = "execute",
-                    func = function() self:StartFrameChooser("r_AnchorFrame") end,
-                    order = 302,
-                },
-                r_AnchorFrameAnchor = {
-                    name = L["AnchorFrame Anchor"],
-                    type = "input",
-                    order = 303,
-                },
-                r_Anchor = {
-                    name = L["Pane Anchor"],
-                    type = "input",
-                    order = 304,
-                },
-                r_OffsetX = {
-                    name = L["x Offset"],
-                    type = "range",
-                    softMin = -200,
-                    softMax = 200,
-                    bigStep = 10,
-                    order = 311,
-                },
-                r_OffsetY = {
-                    name = L["y Offset"],
-                    type = "range",
-                    softMin = -200,
-                    softMax = 200,
-                    bigStep = 10,
-                    order = 312,
                 },
             },
         },
@@ -427,54 +369,3 @@ self.optionsTable = {
 }
 end
 
--- idea from WeakAuras
-local newFocus, oldFocus
-function Addon:StartFrameChooser(option)
-    local db = self.db.profile
-    local oldValue = db[option]
-    if not self.chooserFrame then
-        self.chooserFrame = CreateFrame("frame")
-        self.chooserBox = CreateFrame("frame", nil, self.chooserFrame, BackdropTemplateMixin and "BackdropTemplate")
-        self.chooserBox:SetFrameStrata("TOOLTIP")
-        self.chooserBox:SetBackdrop({
-            edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
-            edgeSize = 12,
-            insets = {left = 0, right = 0, top = 0, bottom = 0}
-        })
-        self.chooserBox:SetBackdropBorderColor(0, 1, 0)
-        self.chooserBox:Hide()
-    end
-
-    self.chooserFrame:SetScript("OnUpdate", function()
-        if(IsMouseButtonDown("RightButton")) then
-            self:StopFrameChooser()
-            db[option] = oldValue
-        elseif(IsMouseButtonDown("LeftButton") and oldFocus) then
-            self:StopFrameChooser()
-        else
-            SetCursor("CAST_CURSOR")
-            newFocus = GetMouseFocus()
-
-            if newFocus and (newFocus ~= oldFocus) and self.chooserBox then
-                self.chooserBox:ClearAllPoints()
-                self.chooserBox:SetPoint("BOTTOMLEFT", newFocus, "BOTTOMLEFT", -4, -4)
-                self.chooserBox:SetPoint("TOPRIGHT", newFocus, "TOPRIGHT", 4, 4)
-                self.chooserBox:Show()
-
-                db[option] = newFocus:GetName()
-                LibStub("AceConfigRegistry-3.0"):NotifyChange(self.name)
-                oldFocus = newFocus
-            end
-        end
-    end)
-end
-
-function Addon:StopFrameChooser()
-    if self.chooserFrame then
-        self.chooserFrame:SetScript("OnUpdate", nil)
-        self.chooserBox:Hide()
-    end
-    ResetCursor()
-    LibStub("AceConfigRegistry-3.0"):NotifyChange(self.name)
-    Addon:RefreshUI()
-end
