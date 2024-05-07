@@ -16,14 +16,11 @@ L["y Offset"] = true
 
 L["Usage"] =
 [[Keywords (Case insensitive, Ignore white space)
-[GS] [GearScore]  [ILVL] [ItemLevel]
-[Mastery] [Mastery Rating] [Mastery R] (R = Rating)
-[Damage] |cffccccccDamage Mod %|r
-[Reduction] [Boss Reduction] |cffccccccReduction from Armor(Same / Boss)|r
-[Armor] [Dodge] [Parry] [Block]
-[Avoidance] |cffccccccMiss+Parry+Dodge|r  [Mitigation] |cffccccccM+D+P+Block|r
-[Melee/Ranged Hit/Crit/Haste/AP/AttackPower]
-[Melee/Ranged Hit/Crit/Haste Rating]
+[GS]  [GearScore]  [ILVL]  [ItemLevel]  [Expertise Percent]  [Expertise]  [Expertise Rating]  
+[Mastery]  [Mastery Rating]  [Mastery R] (R = Rating)  [Damage] |cffccccccDamage Mod %|r
+[Reduction]  [Boss Reduction] |cffccccccReduction from Armor(Same / Boss)|r
+[Armor]  [Dodge]  [Parry]  [Block]  [Avoidance] |cffccccccMiss+Parry+Dodge|r  [Mitigation] |cffccccccM+D+P+Block|r
+[Melee/Ranged Hit/Crit/Haste/AP/AttackPower]  [Melee/Ranged Hit/Crit/Haste Rating]
 [Spell Hit/Haste/Pen/Penetration] [Spell Hit/Haste Rating] [Heal]
 |cffffe57f[Holy] [Holy Crit]|r    |cffff7f00[Fire] [Fire Crit]|r      |cff4cff4c[Nature] [Nature Crit]|r
 |cff7fffff[Frost] [Frost Crit]|r  |cff7f7fff[Shadow] [Shadow Crit]|r  |cffff7fff[Arcane] [Arcane Crit]|r
@@ -38,7 +35,9 @@ L["MITIGATION"] = { "TOTALMITIGATION", "MITIGATION" }
 L["DODGE"]      = true
 L["PARRY"]      = true
 L["BLOCK"]      = true
-L["RESLIENCE"]  = true
+L["EXPERTISE"]  = true
+L["PERCENT"]    = true
+L["RESILIENCE"] = true
 L["MELEE"]      = true
 L["RANGED"]     = true
 L["ATTACKPOWER"]= { "ATTACKPOWER", "AP" }
