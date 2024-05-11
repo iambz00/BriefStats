@@ -15,16 +15,17 @@ L["x Offset"] = true
 L["y Offset"] = true
 
 L["Usage"] =
-[[Keywords (Case insensitive, Ignore white space)
-[GS]  [GearScore]  [ILVL]  [ItemLevel]  [Expertise Percent]  [Expertise]  [Expertise Rating]  
-[Mastery]  [Mastery Rating]  [Mastery R] (R = Rating)  [Damage] |cffccccccDamage Mod %|r
+[[|cffffd100Keywords|r (Case insensitive, Ignore white space)
+[GS]  [GearScore]  [ILVL]  [ItemLevel]    [Expertise]  [Expertise Percent/Rating]
+[Mastery]  [Mastery Rating]  [Mastery R] (R = Rating)  [Damage] |cffccccccDamage %|r
 [Reduction]  [Boss Reduction] |cffccccccReduction from Armor(Same / Boss)|r
-[Armor]  [Dodge]  [Parry]  [Block]  [Avoidance] |cffccccccMiss+Parry+Dodge|r  [Mitigation] |cffccccccM+D+P+Block|r
-[Melee/Ranged Hit/Crit/Haste/AP/AttackPower]  [Melee/Ranged Hit/Crit/Haste Rating]
+[Armor]  [Dodge]  [Parry]  [Block]
+[Avoidance] |cffccccccMiss+Parry+Dodge|r  [Mitigation] |cffccccccM+D+P+Block|r
+[Melee/Ranged Hit/Crit/Haste/AP]  [Melee/Ranged Hit/Crit/Haste Rating]
 [Spell Hit/Haste/Pen/Penetration] [Spell Hit/Haste Rating] [Heal]
 |cffffe57f[Holy] [Holy Crit]|r    |cffff7f00[Fire] [Fire Crit]|r      |cff4cff4c[Nature] [Nature Crit]|r
 |cff7fffff[Frost] [Frost Crit]|r  |cff7f7fff[Shadow] [Shadow Crit]|r  |cffff7fff[Arcane] [Arcane Crit]|r
-[Speed] |cffccccccMovement Speed|r]]
+[Speed] |cffccccccMovement Speed|r  [Resilience]  [Resilience Rating]]
 
 L["ARMOR"]      = true
 L["REDUCTION"]  = { "REDUCTION", "REDUCE" }
@@ -61,6 +62,7 @@ L["SPEED"]      = true
 
 L["DEFAULT_L_STRING_WARRIOR"] =
 [[Hit [Melee Hit]% [Melee Hit Rating]
+Exp [Expertise Percent]% [Expertise]
 Crit [Melee Crit]%
 Haste [Melee Haste]%
 Mastery [Mastery]%
@@ -80,6 +82,7 @@ Haste [Melee Haste]% [Spell Haste]%
 Mastery [Mastery]%]]
 L["DEFAULT_L_STRING_DEATHKNIGHT"] = 
 [[Hit [Melee Hit]% [Melee Hit Rating]
+Exp [Expertise Percent]% [Expertise]
 Crit [Melee Crit]%
 Haste [Melee Haste]%
 Mastery [Mastery]%
@@ -89,16 +92,18 @@ Avoid [Avoidance]%
 T.Mit [Mitigation]%]]
 L["DEFAULT_L_STRING_ROGUE"] = 
 [[Hit [Melee Hit]% [Melee Hit Rating]
+Exp [Expertise Percent]% [Expertise]
 Crit [Melee Crit]%
 Haste [Melee Haste]%
 Mastery [Mastery]%]]
 L["DEFAULT_L_STRING_MAGE"] = 
 [[Fire [Fire] [Fire Crit]%
 Hit [Spell Hit]% [Spell Hit Rating]
-Has [Spell Haste]%
+Haste [Spell Haste]%
 Mastery [Mastery]%]]
 L["DEFAULT_L_STRING_DRUID"] = 
 [[Hit [Melee Hit]% [Melee Hit Rating]
+Exp [Expertise Percent]% [Expertise]
 Crit [Melee Crit]
 Haste [Melee Haste]%
 Mastery [Mastery]%
@@ -108,6 +113,7 @@ Avoid [Avoidance]%]]
 L["DEFAULT_L_STRING_PALADIN"] = 
 [[Heal [Heal] [Holy Crit]
 Hit [Melee Hit]% [Melee Hit Rating]
+Exp [Expertise Percent]% [Expertise]
 Crit [Melee Crit]%
 Haste [Melee Haste]%
 Mastery [Mastery]%
@@ -119,12 +125,12 @@ L["DEFAULT_L_STRING_PRIEST"] =
 [[Shadow [Shadow] [Shadow Crit]%
 Heal [Heal] [Holy Crit]%
 Hit  [Spell Hit]% [Spell Hit Rating]
-Has [Spell Haste]%
+Haste [Spell Haste]%
 Mastery [Mastery]%]]
 L["DEFAULT_L_STRING_WARLOCK"] = 
 [[Shadow [Shadow] [Shadow Crit]%
 Hit  [Spell Hit]% [Spell Hit Rating]
-Has [Spell Haste]%
+Haste [Spell Haste]%
 Mastery [Mastery]%]]
 L["DEFAULT_R_STRING"] = 
 [[[ILVL]
