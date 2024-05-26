@@ -2,12 +2,10 @@ local addonName, shareTable = ...
 local Addon = LibStub("AceAddon-3.0"):NewAddon(addonName, "AceEvent-3.0")
 Addon.name = addonName
 --Addon.version = GetAddOnMetadata(Addon.name, "Version")
-Addon.version = "2.2.2"
+Addon.version = "2.2.3"
 _G[Addon.name] = Addon
 local L = LibStub("AceLocale-3.0"):GetLocale(Addon.name, true)
 local class, engClass = UnitClass("player")
-
-local LibGearScore = LibStub("LibGearScore.1000", true)
 
 local dbDefault = {
     profile = {
@@ -25,16 +23,6 @@ local dbDefault = {
         r_String = L["DEFAULT_R_STRING"],
     }
 }
-
-local function _GetGearScore()
-    local _, gearScore = LibGearScore:GetScore("player")
-    gearScore = gearScore or { AvgItemLevel = 0, GearScore = 0 }
-    if gearScore.GearScore == 0 then
-        LibGearScore:PLAYER_ENTERING_WORLD()
-        _, gearScore = LibGearScore:GetScore("player")
-    end
-    return gearScore
-end
 
 local normalize_base = {
     ["ARMOR"]       = "ARMOR",
@@ -67,8 +55,9 @@ local normalize_base = {
     ["PENETRATION"] = "PEN",
     ["MASTERY"]     = "MAS",
     ["RATING"]      = "R",
+    ["AVERAGE"]     = "AVG",
+    ["EQUIPPED"]    = "EQUIPPED",
     ["ITEMLEVEL"]   = "ILVL",
-    ["GEARSCORE"]   = "GS",
     ["SPEED"]       = "SPEED"
 }
 local normal_word = { }
@@ -161,17 +150,15 @@ local c = {
         end
         return ceil(speed / BASE_MOVEMENT_SPEED * 100)
     end,
-    ILVL  = function()
-        local gearScore = _GetGearScore() or {}
-        local ilvl = gearScore.AvgItemLevel or 0
-        return format("%.1f", ilvl)
+    ILVL = "AVERAGEILVL",
+    AVGILVL = function()
+        local ilvl, _ = GetAverageItemLevel()
+        return format("%d", ilvl)
     end,
-    GS    = function()
-        local gearScore = _GetGearScore() or {}
-        local score = gearScore.GearScore or 0
-        local color = gearScore.Color or CreateColor(0.8, 0.8, 0.8)
-        return color:WrapTextInColorCode(score)
-    end,
+    EQUIPPEDILVL = function()
+        local _, ilvl = GetAverageItemLevel()
+        return format("%d", ilvl)
+    end
 }
 local _mt = {
     __call = function(t, k)

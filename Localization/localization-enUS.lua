@@ -16,7 +16,7 @@ L["y Offset"] = true
 
 L["Usage"] =
 [[|cffffd100Keywords|r (Case insensitive, Ignore white space)
-[GS]  [GearScore]  [ILVL]  [ItemLevel]    [Expertise]  [Expertise Percent/Rating]
+[Average/Equipped ItemLevel/ILVL]    [Expertise]  [Expertise Percent/Rating]
 [Mastery]  [Mastery Rating]  [Mastery R] (R = Rating)  [Damage] |cffccccccDamage %|r
 [Reduction]  [Boss Reduction] |cffccccccReduction from Armor(Same / Boss)|r
 [Armor]  [Dodge]  [Parry]  [Block]
@@ -56,8 +56,9 @@ L["HASTE"]      = true
 L["MASTERY"]    = true
 L["PENETRATION"]= { "PENETRATION", "PEN" }
 L["RATING"]     = true
+L["AVERAGE"]    = { "AVERAGE", "AVG" }
+L["EQUIPPED"]   = true
 L["ITEMLEVEL"]  = { "ITEMLEVEL", "ILVL" }
-L["GEARSCORE"]  = { "GEARSCORE", "GS" }
 L["SPEED"]      = true
 
 L["DEFAULT_L_STRING_WARRIOR"] =
@@ -133,6 +134,6 @@ Hit  [Spell Hit]% [Spell Hit Rating]
 Haste [Spell Haste]%
 Mastery [Mastery]%]]
 L["DEFAULT_R_STRING"] = 
-[[[ILVL]
-[GS]
+[[Average [Average ILVL]
+Equipped [Equipped ILVL]
 [Speed]%]]
