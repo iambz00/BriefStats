@@ -51,7 +51,6 @@ local normalize_base = {
     ["HIT"]         = "HIT",
     ["CRITICAL"]    = "CRIT",
     ["HASTE"]       = "HAS",
-    ["MASTERY"]     = "MAS",
     ["PENETRATION"] = "PEN",
     ["MASTERY"]     = "MAS",
     ["RATING"]      = "R",
