@@ -79,6 +79,7 @@ Mastery [Mastery]%]]
 L["DEFAULT_L_STRING_SHAMAN"] = 
 [[Nature [Nature] [Nature Crit]%
 Hit [Melee Hit]% [Spell Hit]%
+Crit [Melee Crit]%
 Haste [Melee Haste]% [Spell Haste]%
 Mastery [Mastery]%]]
 L["DEFAULT_L_STRING_DEATHKNIGHT"] = 

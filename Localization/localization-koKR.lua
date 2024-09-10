@@ -77,7 +77,7 @@ L["DEFAULT_L_STRING_HUNTER"] =
 L["DEFAULT_L_STRING_SHAMAN"] = 
 [[자연 [자연] [자연 극대]%
 적중 [근접 적중]% [주문 적중]%
-치명 [근접 치명]% [주문 치명]%
+치명 [근접 치명]%
 가속 [근접 가속]% [주문 가속]%
 특화 [특화]%]]
 L["DEFAULT_L_STRING_DEATHKNIGHT"] = 

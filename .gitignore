@@ -2,3 +2,5 @@
 *.ini
 *.psd
 *.zip
+.vscode/*
+
