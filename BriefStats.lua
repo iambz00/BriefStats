@@ -2,10 +2,10 @@ local addonName, shareTable = ...
 local Addon = LibStub("AceAddon-3.0"):NewAddon(addonName, "AceEvent-3.0")
 Addon.name = addonName
 --Addon.version = GetAddOnMetadata(Addon.name, "Version")
-Addon.version = "2.2.3"
+Addon.version = "2.2.5"
 _G[Addon.name] = Addon
 local L = LibStub("AceLocale-3.0"):GetLocale(Addon.name, true)
-local class, engClass = UnitClass("player")
+local _, engClass = UnitClass("player")
 
 local dbDefault = {
     profile = {
@@ -98,12 +98,12 @@ local c = {
     RESR  = function() return GetCombatRating(COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN) end,
     MAP   = function()  -- Melee AP
         local base, posBuff, negBuff = UnitAttackPower("player")
-        ap = base + posBuff + negBuff
+        local ap = base + posBuff + negBuff
         return (ap > 0) and ap or 0
     end,
     RAP   = function()  -- Ranged AP
         local base, posBuff, negBuff = UnitRangedAttackPower("player")
-        ap = base + posBuff + negBuff
+        local ap = base + posBuff + negBuff
         return (ap > 0) and ap or 0
     end,
     MHIT  = function() return format("%.2f", GetCombatRatingBonus(CR_HIT_MELEE)) end,
