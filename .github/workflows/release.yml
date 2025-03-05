@@ -25,4 +25,4 @@ jobs:
       - name: WoW Packager
         uses: BigWigsMods/packager@v2.4.1
         with:
-          args: -g cata -p 605574 -n "{package-name}-{project-version}"
+          args: -g classic -p 605574 -n "{package-name}-{project-version}"

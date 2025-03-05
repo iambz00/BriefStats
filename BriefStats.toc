@@ -1,6 +1,6 @@
-## Interface: 40402
+## Interface: 11506
 ## Title: BriefStats
-## Version: 4.4.2.1
+## Version: 1.15.6.1
 ## X-Curse-Project-ID: 605574
 
 ## Notes: Briefly show stats over Character window

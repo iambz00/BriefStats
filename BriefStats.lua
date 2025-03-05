@@ -2,7 +2,7 @@ local addonName, shareTable = ...
 local Addon = LibStub("AceAddon-3.0"):NewAddon(addonName, "AceEvent-3.0")
 Addon.name = addonName
 --Addon.version = GetAddOnMetadata(Addon.name, "Version")
-Addon.version = "4.4.2.1"
+Addon.version = "1.15.6.1"
 _G[Addon.name] = Addon
 local L = LibStub("AceLocale-3.0"):GetLocale(Addon.name, true)
 local _, engClass = UnitClass("player")
@@ -91,18 +91,18 @@ local c = {
     DODGE = function() return format("%.2f", GetDodgeChance()) end,
     PARRY = function() return format("%.2f", GetParryChance()) end,
     BLOCK = function() return format("%.2f", GetBlockChance()) end,
-    EXPERTISEPERCENT = function() return format("%.2f", GetExpertisePercent()) end,
-    EXPERTISE  = function() return format("%.2f", GetCombatRatingBonus(CR_EXPERTISE)) end,
-    EXPERTISER = function() return GetCombatRating(CR_EXPERTISE) end,
-    RES   = function() return format("%.2f", GetCombatRatingBonus(COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN)) end,
-    RESR  = function() return GetCombatRating(COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN) end,
+    -- EXPERTISEPERCENT = function() return format("%.2f", GetExpertisePercent()) end,
+    -- EXPERTISE  = function() return format("%.2f", GetCombatRatingBonus(CR_EXPERTISE)) end,
+    -- EXPERTISER = function() return GetCombatRating(CR_EXPERTISE) end,
+    -- RES   = function() return format("%.2f", GetCombatRatingBonus(COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN)) end,
+    -- RESR  = function() return GetCombatRating(COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN) end,
     MAP   = function()  -- Melee AP
         local base, posBuff, negBuff = UnitAttackPower("player")
         local ap = base + posBuff + negBuff
         return (ap > 0) and ap or 0
     end,
     RAP   = function()  -- Ranged AP
-        local base, posBuff, negBuff = UnitRangedAttackPower("player")
+        local base, posBuff, negBuff = UnitRangedAttackPower("player") -- UnitRangedAttack?
         local ap = base + posBuff + negBuff
         return (ap > 0) and ap or 0
     end,
