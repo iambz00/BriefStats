@@ -134,6 +134,16 @@ L["DEFAULT_L_STRING_WARLOCK"] =
 Hit  [Spell Hit]% [Spell Hit Rating]
 Haste [Spell Haste]%
 Mastery [Mastery]%]]
+L["DEFAULT_L_STRING_MONK"] =
+[[Hit [Melee Hit]% [Melee Hit Rating]
+Exp [Expertise Percent]% [Expertise]
+Crit [Melee Crit]%
+Haste [Melee Haste]%
+Mastery [Mastery]%
+
+Armor [Armor]
+Avoid [Avoidance]%
+T.Mit [Mitigation]%]]
 L["DEFAULT_R_STRING"] = 
 [[Average [Average ILVL]
 Equipped [Equipped ILVL]

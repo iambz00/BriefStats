@@ -2,7 +2,7 @@ local addonName, shareTable = ...
 local Addon = LibStub("AceAddon-3.0"):NewAddon(addonName, "AceEvent-3.0")
 Addon.name = addonName
 --Addon.version = GetAddOnMetadata(Addon.name, "Version")
-Addon.version = "4.4.2.1"
+Addon.version = "5.5.0.1"
 _G[Addon.name] = Addon
 local L = LibStub("AceLocale-3.0"):GetLocale(Addon.name, true)
 local _, engClass = UnitClass("player")
@@ -86,8 +86,8 @@ local c = {
         local _,_,_,_,_,_,percent = UnitDamage("player")
         return floor(percent*100+0.5)
     end,
-    AVOID = function() return format("%.2f", BASE_MISS_CHANCE_PHYSICAL[0] + GetDodgeChance() + GetParryChance()) end,
-    MIT   = function() return format("%.2f", BASE_MISS_CHANCE_PHYSICAL[0] + GetDodgeChance() + GetParryChance() + GetBlockChance()) end,
+    AVOID = function() return format("%.2f", GetDodgeChance() + GetParryChance()) end,
+    MIT   = function() return format("%.2f", GetDodgeChance() + GetParryChance() + GetBlockChance()) end,
     DODGE = function() return format("%.2f", GetDodgeChance()) end,
     PARRY = function() return format("%.2f", GetParryChance()) end,
     BLOCK = function() return format("%.2f", GetBlockChance()) end,
